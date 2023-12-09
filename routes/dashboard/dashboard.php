@@ -13,10 +13,7 @@ Route::group(
         Route::get('dashboard', [Admin\DashboardController::class, 'index'])->name('admin.dashboard');
         
         // Main Settings ::
-        Route::controller(Admin\MainSettingsController::class)->prefix('mainSettings')->as('mainSettings.')->group(function() {
-            Route::get('/', 'index')->name('index');
-            Route::post('/store', 'store')->name('store');
-        });
+        
     });
 
     
