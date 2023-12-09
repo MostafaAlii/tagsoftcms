@@ -160,6 +160,9 @@ return [
          * Package Service Providers...
          */
         Barryvdh\Debugbar\ServiceProvider::class,
+        Yajra\DataTables\DataTablesServiceProvider::class,
+        Yajra\DataTables\ButtonsServiceProvider::class,
+
         /*
          * Application Service Providers...
          */
