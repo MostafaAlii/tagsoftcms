@@ -22,7 +22,7 @@ class RepositoryServiceProvider extends ServiceProvider
         //
     }
 
-    protected function loadRepositories() {
+    /*protected function loadRepositories() {
         $repositoryPath = app_path('Repositories/Eloquents');
         $files = scandir($repositoryPath);
         foreach ($files as $file) {
@@ -33,6 +33,25 @@ class RepositoryServiceProvider extends ServiceProvider
             $interface = "App\\Repositories\\Contracts\\{$filename}Interface";
             if (class_exists($repositoryClass) && interface_exists($interface)) 
                 $this->app->bind($interface, $repositoryClass);
+        }
+    }*/
+
+    protected function loadRepositories() {
+        $repositoryPath = app_path('Repositories/Eloquents');
+        $contractPath = app_path('Repositories/Contracts');
+        if (!is_dir($repositoryPath) || !is_dir($contractPath)) 
+            return;
+        $repositoryFiles = scandir($repositoryPath);
+        $contractFiles = scandir($contractPath);
+        foreach ($repositoryFiles as $file) {
+            if (!str_ends_with($file, '.php')) 
+                continue;
+            $filename = basename($file, '.php');
+            $repositoryClass = "App\\Repositories\\Eloquents\\{$filename}";
+            $interface = "App\\Repositories\\Contracts\\{$filename}Interface";
+            if (class_exists($repositoryClass) && interface_exists($interface)) 
+                $this->app->bind($interface, $repositoryClass);
+            
         }
     }
 }
