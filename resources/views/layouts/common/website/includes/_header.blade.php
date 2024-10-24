@@ -38,8 +38,8 @@
                             </ul>
                             <div class="dropdown-divider"></div>
                             <ul class="collection with-header lang-menu" id="lang_menu">
-                                <li class="collection-header">لغة</li>
-                                <li class="collection-item lang-list waves-effect avatar">
+                                <li class="collection-header">{{ LaravelLocalization::getCurrentLocaleNative() }}</li>
+                                <!-- <li class="collection-item lang-list waves-effect avatar">
                                     <a data-lang="ar" href="#">
                                         <div class="flag circle"><i class="ar"></i></div>
                                         <span class="content lang-opt text-truncate">󠁥󠁮󠁧󠁿العربيّة</span>
@@ -50,7 +50,15 @@
                                         <div class="flag circle"><i class="en"></i></div>
                                         <span class="content lang-opt text-truncate">English</span>
                                     </a>
-                                </li>
+                                </li> -->
+                                @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+                                    <li class="collection-item lang-list waves-effect avatar">
+                                        <a data-lang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
+                                            <div class="flag circle"><i class="{{ $localeCode }}"></i></div>
+                                            <span class="content lang-opt text-truncate">{{ $properties['native'] }}</span>
+                                        </a>
+                                    </li>
+                                @endforeach
                             </ul>
                         </div>
                     </div>

@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('css')
-    <link href="{{ URL::asset('assets/css/plugins/toastr.css') }}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
 @section('title')
     {{ $title }}
 @stop

@@ -1,9 +1,8 @@
 <?php
 namespace Database\Factories;
 use Illuminate\Support\Str;
-use App\Enums\Admin\AdminStatus;
+use App\Enums\Admin\{AdminStatus,AdminType};
 use Illuminate\Database\Eloquent\Factories\Factory;
-
 class AdminFactory extends Factory {
     public function definition() {
         return [
@@ -12,7 +11,8 @@ class AdminFactory extends Factory {
             'email_verified_at' => now(),
             'password' => bcrypt('123123'),
             'remember_token' => Str::random(10),
-            'status' => fake()->randomElement([AdminStatus::ACTIVE, AdminStatus::IN_ACTIVE, AdminStatus::BLOCKED])
+            'status' => fake()->randomElement([AdminStatus::ACTIVE, AdminStatus::IN_ACTIVE, AdminStatus::BLOCKED]),
+            'type' => fake()->randomElement([AdminType::SUPERVISOR, AdminType::ADMIN])
         ];
     }
 

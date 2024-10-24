@@ -23,6 +23,18 @@
     .alert {
         font-family: 'Cairo', sans-serif;
     }
+
+    .alert-danger {
+        color: #721c24;
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+    }
+
+    .alert-info {
+        color: #0c5461;
+        background-color: #d1dce5;
+        border-color: #c3d9e7;
+    }
 </style>
 @yield('css')
 <!--- Style css -->

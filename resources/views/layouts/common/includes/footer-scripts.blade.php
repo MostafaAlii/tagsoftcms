@@ -25,7 +25,8 @@
 <script src="{{ URL::asset('assets/js/sweetalert2.js') }}"></script>
 <!-- toastr -->
 @yield('js')
-<script src="{{ URL::asset('assets/js/toastr.js') }}"></script>
+<script src="{{ asset('assets/toastr.min.js') }}"></script>
+
 <!-- validation -->
 <script src="{{ URL::asset('assets/js/validation.js') }}"></script>
 <!-- lobilist -->
@@ -33,3 +34,25 @@
 <!-- custom -->
 <script src="{{ URL::asset('assets/js/custom.js') }}"></script>
 <script src="{{ URL::asset('assets/js/nicescroll/jquery.nicescroll.js') }}"></script>
+<script>
+    $(document).ready(function() {
+        toastr.options = {
+            rtl: true,
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        };
+    });
+</script>

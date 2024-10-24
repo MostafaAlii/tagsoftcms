@@ -3,7 +3,7 @@ namespace Database\Seeders;
 use App\Models\Admin;
 use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
-use App\Enums\Admin\AdminStatus;
+use App\Enums\Admin\{AdminStatus,AdminType};
 use Illuminate\Support\Facades\{DB, Schema};
 class AdminTableSeeder extends Seeder {
     public function run() {
@@ -15,6 +15,7 @@ class AdminTableSeeder extends Seeder {
             'password'      =>  bcrypt('123123'),
             'remember_token' => Str::random(10),
             'status' => AdminStatus::ACTIVE,
+            'type'  => AdminType::ADMIN,
             'email_verified_at' => now()
         ]);
         env('APP_ENV') === 'local' ? Admin::factory()->count(10)->create() : $admin;
