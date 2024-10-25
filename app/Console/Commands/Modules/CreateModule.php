@@ -37,24 +37,35 @@ class CreateModule extends Command {
         if ($this->confirm('Do you want to create Migration, Seeder, and Factory files?')) {
             $this->createDatabaseFiles($modulePath);
         }
+
+        $this->createRoutes($modulePath, $moduleName);
+        $this->createResourceFolders($modulePath, $moduleName);
     }
 
-    /*protected function createControllers($modulePath, $moduleName) {
-        $controllersPath = $modulePath . '/Http/Controllers';
-        File::makeDirectory($controllersPath . '/Backend', 0755, true);
-        File::makeDirectory($controllersPath . '/Frontend', 0755, true);
-        File::makeDirectory($controllersPath . '/Api', 0755, true);
-        $this->info("Controllers directories (Backend, Frontend, Api) created successfully!");
-        if ($this->confirm('Do you want the controller to be a resource controller?')) {
-            $this->createControllerFile($controllersPath . '/Backend', $moduleName, 'Backend', true);
-            $this->createControllerFile($controllersPath . '/Frontend', $moduleName, 'Frontend', true);
-            $this->createControllerFile($controllersPath . '/Api', $moduleName, 'Api', true);
-        } else {
-            $this->createControllerFile($controllersPath . '/Backend', $moduleName, 'Backend', false);
-            $this->createControllerFile($controllersPath . '/Frontend', $moduleName, 'Frontend', false);
-            $this->createControllerFile($controllersPath . '/Api', $moduleName, 'Api', false);
-        }
-    }*/
+    protected function createRoutes($modulePath, $moduleName) {
+        $routesPath = $modulePath . '/routes';
+        File::makeDirectory($routesPath, 0755, true);
+        $webRouteFile = $routesPath . '/' . strtolower($moduleName) . '.php';
+        $apiRouteFile = $routesPath . '/api.php';
+        File::put($webRouteFile, "<?php\n\nuse Illuminate\Support\Facades\Route;\n\nRoute::prefix('" . strtolower($moduleName) . "')->group(function () {\n    // Web routes for {$moduleName}\n});\n");
+        File::put($apiRouteFile, "<?php\n\nuse Illuminate\Support\Facades\Route;\n\nRoute::prefix('" . strtolower($moduleName) . "')->group(function () {\n    // API routes for {$moduleName}\n});\n");
+        $this->info("Routes folder and files created successfully!");
+    }
+
+    protected function createResourceFolders($modulePath, $moduleName) {
+        $resourcesPath = $modulePath . '/resources';
+        File::makeDirectory($resourcesPath, 0755, true);
+        File::makeDirectory($resourcesPath . '/css', 0755, true);
+        File::makeDirectory($resourcesPath . '/js', 0755, true);
+        File::makeDirectory($resourcesPath . '/views', 0755, true);
+        $this->info("Resources folder with css, js, and views created successfully!");
+        $defaultLang = config('app.locale');
+        $langPath = $resourcesPath . '/lang/' . $defaultLang;
+        File::makeDirectory($langPath, 0755, true);
+        $translationFile = $langPath . '/' . Str::lcfirst(Str::singular($moduleName)) . '.php';
+        File::put($translationFile, "<?php\n\nreturn [\n    // Translation strings for {$moduleName}\n];\n");
+        $this->info("Lang folder with default language created successfully!");
+    }
 
     protected function createControllers($modulePath, $moduleName) {
         $controllersPath = $modulePath . '/Http/Controllers';

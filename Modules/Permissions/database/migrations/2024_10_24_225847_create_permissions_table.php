@@ -8,6 +8,8 @@ return new class extends Migration {
     public function up() {
         Schema::create('permissions', function (Blueprint $table) {
             $table->id();
+            $table->uuid('uuid')->unique();
+            $table->string('status');
             $table->timestamps();
         });
     }

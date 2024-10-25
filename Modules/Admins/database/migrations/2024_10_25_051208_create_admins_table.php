@@ -6,13 +6,13 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
     public function up() {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('admins', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
         });
     }
 
     public function down() {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('admins');
     }
 };
