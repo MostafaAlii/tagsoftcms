@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
-
 return [
 
     /*
@@ -174,6 +173,8 @@ return [
         App\Providers\HelperServiceProvider::class,
         App\Providers\ObservableServiceProvider::class,
         App\Providers\RepositoryServiceProvider::class,
+        App\Providers\ModuleServiceProvider::class,
+        //Modules\Admins\Providers\AdminServiceProvider::class,
     ])->toArray(),
 
     /*

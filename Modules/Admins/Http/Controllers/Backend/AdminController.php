@@ -1,12 +1,37 @@
 <?php
 
-namespace Modules\Admin\Http\Controllers\Backend;
+namespace Modules\Admins\Http\Controllers\Backend;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class AdminController extends Controller
 {
     public function index() {
-        // Regular Controller content here
+        // Code for listing resources
+    }
+
+    public function create() {
+        // Code for showing create form
+    }
+
+    public function store(Request $request) {
+        // Code for storing resource
+    }
+
+    public function show($id) {
+        // Code for showing single resource
+    }
+
+    public function edit($id) {
+        // Code for showing edit form
+    }
+
+    public function update(Request $request, $id) {
+        // Code for updating resource
+    }
+
+    public function destroy($id) {
+        // Code for deleting resource
     }
 }

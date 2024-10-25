@@ -1,5 +1,5 @@
 <?php
 
 return [
-    // Translation strings for Admin
+    // Translation strings for Admins
 ];

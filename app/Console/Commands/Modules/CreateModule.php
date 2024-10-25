@@ -40,6 +40,7 @@ class CreateModule extends Command {
 
         $this->createRoutes($modulePath, $moduleName);
         $this->createResourceFolders($modulePath, $moduleName);
+        $this->createServiceProvider($moduleName);
     }
 
     protected function createRoutes($modulePath, $moduleName) {
@@ -159,5 +160,15 @@ class CreateModule extends Command {
     protected function getFolderNameFromPath($path) {
         $folders = explode('/', $path);
         return end($folders);
+    }
+
+    protected function createServiceProvider($moduleName) {
+        $generator = new \App\Generators\ServiceProviderGenerator();
+        $providerData = $generator->generate($moduleName);
+        $providerPath = base_path("Modules/{$moduleName}/Providers");
+        if (!file_exists($providerPath))
+            mkdir($providerPath, 0755, true);
+        file_put_contents("{$providerPath}/{$providerData['serviceProviderName']}.php", $providerData['content']);
+        $this->info("{$providerData['serviceProviderName']} created successfully!");
     }
 }
