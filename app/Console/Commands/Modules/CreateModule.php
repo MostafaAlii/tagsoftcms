@@ -56,8 +56,7 @@ class CreateModule extends Command {
         }
     }*/
 
-    protected function createControllers($modulePath, $moduleName)
-    {
+    protected function createControllers($modulePath, $moduleName) {
         $controllersPath = $modulePath . '/Http/Controllers';
         File::makeDirectory($controllersPath . '/Backend', 0755, true);
         File::makeDirectory($controllersPath . '/Frontend', 0755, true);
@@ -74,7 +73,6 @@ class CreateModule extends Command {
             $this->createRegularController($controllersPath . '/Api', $moduleName, "{$this->modelName}Controller");
         }
     }
-
 
     protected function createControllerFile($path, $moduleName, $type, $isResource) {
         $controllerFile = $path . '/' . $this->modelName . 'Controller.php';
