@@ -52,6 +52,23 @@ class ModuleServiceProvider extends ServiceProvider {
         }
     }
 
+    protected function load_views()
+    {
+        $moduleName = str_replace('ServiceProvider', '', class_basename($this));
+        $moduleNamePlural = ucfirst(strtolower($moduleName)) . 's';
+        $viewsPath = base_path("Modules/{$moduleNamePlural}/resources/views/");
+        $viewsFiles = glob($viewsPath);
+        if (empty($viewsFiles)) {
+            Log::warning('No View files found in: ' . $viewsPath);
+        } else {
+            Log::info('View files found: ' . json_encode($viewsFiles));
+        }
+        foreach ($viewsFiles as $viewsFile) {
+            $this->loadViewsFrom($viewsFile, $moduleNamePlural);
+            Log::info('Loaded view file: ' . $viewsFile);
+        }
+    }
+
     protected function loadAllModulesConfig() {
         $modulesPath = base_path('Modules');
         if (File::exists($modulesPath)) {
@@ -73,4 +90,29 @@ class ModuleServiceProvider extends ServiceProvider {
         }
     }
 
+    protected function load_prefix() {
+        $modulesPath = base_path('Modules');
+        if (File::exists($modulesPath)) {
+            $modules = File::directories($modulesPath);
+            foreach ($modules as $module) {
+                $moduleName = strtolower(basename($module));
+                $routesPath = ucfirst($module) . $this->ds . 'routes';
+                if (File::exists($routesPath)) {
+                    $routeFiles = File::files($routesPath);
+
+                    foreach ($routeFiles as $routeFile) {
+                        $routeType = pathinfo($routeFile, PATHINFO_FILENAME);
+                        dd($routeType);
+                        $prefix = config("{$moduleName}_module_config.prefix.{$routeType}", $moduleName);
+                    }
+
+                }
+                //config('modules.general.prefix.web' . '/' . config('{$moduleName}_module_config.prefix.web'))
+            }
+
+        }
+    }
 }
+
+
+

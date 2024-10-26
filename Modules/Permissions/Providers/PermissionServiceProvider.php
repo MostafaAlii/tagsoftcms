@@ -6,7 +6,7 @@ class PermissionServiceProvider extends ModuleServiceProvider {
     public function boot() {
         $this->loadAllModulesConfig();
         $this->load_routes();
-        //dd(config());
+        $this->load_views();
     }
 
     public function register() {

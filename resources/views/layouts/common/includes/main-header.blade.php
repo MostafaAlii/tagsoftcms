@@ -31,7 +31,7 @@
               </button>
             <div class="dropdown-menu">
                 @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
-                    
+
                         <a class="dropdown-item" rel="alternate" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
                             {{ $properties['native'] }}
                         </a>
@@ -94,8 +94,8 @@
         <li class="nav-item dropdown mr-30">
             <a class="nav-link nav-pill user-avatar" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
                 aria-expanded="false">
-                <img src="{{ get_user_data()->profile->avatar? asset('dashboard/images/admins/'.get_user_data()->email . get_user_data()->phone . '_' . get_user_data()->profile->uuid  . '/' . get_user_data()->profile->avatar .get_user_data()->profile->avatar) : asset('dashboard/default/default_admin.jpg')}}
-                " alt="{{ get_user_data()->name }}">
+                <img src="{{ get_user_data()?->profile->avatar? asset('dashboard/images/admins/'.get_user_data()->email . get_user_data()->phone . '_' . get_user_data()->profile->uuid  . '/' . get_user_data()->profile->avatar .get_user_data()->profile->avatar) : asset('dashboard/default/default_admin.jpg')}}
+                " alt="{{ get_user_data()?->name }}">
             </a>
             <div class="dropdown-menu dropdown-menu-right">
                 <div class="dropdown-header">

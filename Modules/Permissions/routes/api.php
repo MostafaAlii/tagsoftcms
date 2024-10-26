@@ -1,10 +1,9 @@
-<?php
-
-use Illuminate\Support\Facades\Route;
-Route::prefix('api')->group(function () {
-    Route::prefix('permissions')->group(function () {
-        Route::get('/', function () {
-            return 'permission api module';
-        });
+    <?php
+    use Illuminate\Support\Facades\Route;
+    Route::prefix(config('modules.general.prefix.api.prefix') . '/' . config('modules.general.prefix.api.version'))->group(function () {
+            Route::prefix(config('permissions_module_config.prefix.api'))->group(function () {
+                Route::get('/', function () {
+                    return 'permissions api module';
+                });
+            });
     });
-});

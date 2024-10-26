@@ -1,46 +1,33 @@
 <?php
 namespace App\Generators;
 class RouteTemplateGenerator {
-
-    /**
-     * Generate the web route content for a specific module.
-     *
-     * @param string $modulePrefix The prefix for the module.
-     * @return string
-     */
-    public function generateWebRouteContent($modulePrefix)
-    {
+    public function generateWebRouteContent($modulePrefix) {
         return <<<EOT
             <?php
 
             use Illuminate\Support\Facades\Route;
-
-            Route::prefix('{$modulePrefix}')->group(function () {
-                Route::get('/', function () {
-                    return '{$modulePrefix} module';
+            Route::prefix(config('modules.general.prefix.web'))->group(function () {
+                Route::prefix(config('{$modulePrefix}_module_config.prefix.web'))->group(function () {
+                    Route::get('/', function () {
+                        return '{$modulePrefix} module';
+                    });
                 });
             });
         EOT;
     }
 
-    /**
-     * Generate the API route content for a specific module.
-     *
-     * @param string $modulePrefix The prefix for the module.
-     * @return string
-     */
     public function generateApiRouteContent($modulePrefix) {
         return <<<EOT
             <?php
 
             use Illuminate\Support\Facades\Route;
 
-            Route::prefix('api')->group(function () {
-                Route::prefix('{$modulePrefix}')->group(function () {
-                    Route::get('/', function () {
-                        return '{$modulePrefix} api module';
+            Route::prefix(config('modules.general.prefix.api.prefix') . '/' . config('modules.general.prefix.api.version'))->group(function () {
+                    Route::prefix(config('{$modulePrefix}_module_config.prefix.api'))->group(function () {
+                        Route::get('/', function () {
+                            return '{$modulePrefix} api module';
+                        });
                     });
-                });
             });
         EOT;
     }
