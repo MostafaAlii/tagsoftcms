@@ -27,6 +27,7 @@ class ServiceProviderGenerator {
                      * @return void
                      */
                     public function boot() {
+                        \$this->loadAllModulesConfig();
                         \$this->load_routes();
                     }
 

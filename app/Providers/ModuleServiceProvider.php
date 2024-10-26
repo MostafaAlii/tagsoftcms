@@ -1,7 +1,10 @@
 <?php
+
 namespace App\Providers;
+
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\{File, Log};
+
 class ModuleServiceProvider extends ServiceProvider {
     protected $ds = DIRECTORY_SEPARATOR;
     public function boot() {
@@ -48,4 +51,26 @@ class ModuleServiceProvider extends ServiceProvider {
             Log::info('Loaded route file: ' . $routeFile);
         }
     }
+
+    protected function loadAllModulesConfig() {
+        $modulesPath = base_path('Modules');
+        if (File::exists($modulesPath)) {
+            $modules = File::directories($modulesPath);
+            foreach ($modules as $module) {
+                $moduleName = strtolower(basename($module));
+                $configPath = $module . $this->ds . 'config' . $this->ds . 'config.php';
+                if (File::exists($configPath)) {
+                    config([
+                        "{$moduleName}_module_config" => File::getRequire($configPath),
+                    ]);
+                    Log::info("Configuration loaded for module: {$moduleName}");
+                } else {
+                    Log::warning("Config file not found for module: {$moduleName}");
+                }
+            }
+        } else {
+            Log::warning("Modules directory not found at path: {$modulesPath}");
+        }
+    }
+
 }

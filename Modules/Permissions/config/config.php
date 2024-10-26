@@ -2,7 +2,7 @@
 
 return [
     'prefix' => [
-        'web' => '',
-        'api' => '',
+        'web' => 'permissions',
+        'api' => 'permissions',
     ]
 ];

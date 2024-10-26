@@ -53,20 +53,6 @@ class CreateModule extends Command {
         $this->info("Routes folder and files created successfully!");
     }
 
-    /*protected function createConfigFolder($modulePath, $moduleName) {
-        $configPath = $modulePath . '/config';
-        $configFile = $configPath . '/config.php';
-        if (!File::exists($configPath)) {
-            File::makeDirectory($configPath, 0755, true);
-            $this->info("Config folder created successfully!");
-        }
-        if (!File::exists($configFile)) {
-            $configContent = "<?php\n\nreturn [\n    // Configuration options for the {$moduleName} module\n];\n";
-            File::put($configFile, $configContent);
-            $this->info("Config file created successfully in {$configPath}!");
-        }
-    }*/
-
     protected function createConfigFolder($modulePath, $moduleName) {
         $configPath = $modulePath . '/config';
         $configFile = $configPath . '/config.php';
