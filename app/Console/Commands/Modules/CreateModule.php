@@ -3,6 +3,7 @@ namespace App\Console\Commands\Modules;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
+use App\Generators\{RouteTemplateGenerator, ServiceProviderGenerator};
 class CreateModule extends Command {
     protected $signature = 'make:module {name}';
     protected $description = 'Create a new module with optional Models';
@@ -45,12 +46,19 @@ class CreateModule extends Command {
 
     protected function createRoutes($modulePath, $moduleName) {
         $routesPath = $modulePath . '/routes';
-        File::makeDirectory($routesPath, 0755, true);
-        $webRouteFile = $routesPath . '/' . strtolower($moduleName) . '.php';
-        $apiRouteFile = $routesPath . '/api.php';
-        File::put($webRouteFile, "<?php\n\nuse Illuminate\Support\Facades\Route;\n\nRoute::prefix('" . strtolower($moduleName) . "')->group(function () {\n    // Web routes for {$moduleName}\n});\n");
-        File::put($apiRouteFile, "<?php\n\nuse Illuminate\Support\Facades\Route;\n\nRoute::prefix('" . strtolower($moduleName) . "')->group(function () {\n    // API routes for {$moduleName}\n});\n");
-        $this->info("Routes folder and files created successfully!");
+        $modulePrefix = strtolower($moduleName);
+        if (!File::exists($routesPath)) {
+            File::makeDirectory($routesPath, 0755, true);
+            $this->info("Routes folder created successfully!");
+        }
+        $routeTemplateGenerator = new RouteTemplateGenerator();
+        $webRouteContent = $routeTemplateGenerator->generateWebRouteContent($modulePrefix);
+        $apiRouteContent = $routeTemplateGenerator->generateApiRouteContent($modulePrefix);
+        $webRouteFile = "{$routesPath}/{$modulePrefix}.php";
+        $apiRouteFile = "{$routesPath}/api.php";
+        File::put($webRouteFile, $webRouteContent);
+        File::put($apiRouteFile, $apiRouteContent);
+        $this->info("Web and API route files created successfully for {$moduleName}!");
     }
 
     protected function createConfigFolder($modulePath, $moduleName) {
@@ -196,7 +204,7 @@ class CreateModule extends Command {
     }
 
     protected function createServiceProvider($moduleName) {
-        $generator = new \App\Generators\ServiceProviderGenerator();
+        $generator = new ServiceProviderGenerator();
         $providerData = $generator->generate($moduleName);
         $providerPath = base_path("Modules/{$moduleName}/Providers");
         if (!file_exists($providerPath))
