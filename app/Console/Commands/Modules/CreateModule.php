@@ -37,7 +37,7 @@ class CreateModule extends Command {
         if ($this->confirm('Do you want to create Migration, Seeder, and Factory files?')) {
             $this->createDatabaseFiles($modulePath);
         }
-
+        $this->createConfigFolder($modulePath, $moduleName);
         $this->createRoutes($modulePath, $moduleName);
         $this->createResourceFolders($modulePath, $moduleName);
         $this->createServiceProvider($moduleName);
@@ -51,6 +51,44 @@ class CreateModule extends Command {
         File::put($webRouteFile, "<?php\n\nuse Illuminate\Support\Facades\Route;\n\nRoute::prefix('" . strtolower($moduleName) . "')->group(function () {\n    // Web routes for {$moduleName}\n});\n");
         File::put($apiRouteFile, "<?php\n\nuse Illuminate\Support\Facades\Route;\n\nRoute::prefix('" . strtolower($moduleName) . "')->group(function () {\n    // API routes for {$moduleName}\n});\n");
         $this->info("Routes folder and files created successfully!");
+    }
+
+    /*protected function createConfigFolder($modulePath, $moduleName) {
+        $configPath = $modulePath . '/config';
+        $configFile = $configPath . '/config.php';
+        if (!File::exists($configPath)) {
+            File::makeDirectory($configPath, 0755, true);
+            $this->info("Config folder created successfully!");
+        }
+        if (!File::exists($configFile)) {
+            $configContent = "<?php\n\nreturn [\n    // Configuration options for the {$moduleName} module\n];\n";
+            File::put($configFile, $configContent);
+            $this->info("Config file created successfully in {$configPath}!");
+        }
+    }*/
+
+    protected function createConfigFolder($modulePath, $moduleName) {
+        $configPath = $modulePath . '/config';
+        $configFile = $configPath . '/config.php';
+        if (!File::exists($configPath)) {
+            File::makeDirectory($configPath, 0755, true);
+            $this->info("Config folder created successfully!");
+        }
+        if (!File::exists($configFile)) {
+            $modulePrefix = strtolower($moduleName);
+            $configContent = <<<EOT
+                <?php
+
+                return [
+                    'prefix' => [
+                        'web' => '{$modulePrefix}',
+                        'api' => '{$modulePrefix}',
+                    ]
+                ];
+                EOT;
+            File::put($configFile, $configContent);
+            $this->info("Config file created successfully in {$configPath}!");
+        }
     }
 
     protected function createResourceFolders($modulePath, $moduleName) {
