@@ -1,15 +1,12 @@
 <?php
-
 namespace Modules\Permissions\Providers;
-
-use Illuminate\Support\ServiceProvider;
-
-class PermissionServiceProvider extends ServiceProvider {
+use App\Providers\ModuleServiceProvider;
+class PermissionServiceProvider extends ModuleServiceProvider {
     public function boot() {
-        dd('permission service provider');
+        $this->load_routes();
     }
 
     public function register() {
-        
+
     }
 }

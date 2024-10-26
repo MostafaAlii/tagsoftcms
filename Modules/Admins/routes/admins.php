@@ -2,6 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-    Route::get('xyz', function () {
-        return 'admin module';
-    });
+Route::prefix('admins')->group(function () {
+    // Web routes for Admins
+});

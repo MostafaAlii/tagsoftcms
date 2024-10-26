@@ -3,6 +3,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\{File, Log};
 class ModuleServiceProvider extends ServiceProvider {
+    protected $ds = DIRECTORY_SEPARATOR;
     public function boot() {
         $this->registerModuleProviders();
     }
@@ -29,6 +30,22 @@ class ModuleServiceProvider extends ServiceProvider {
                     Log::warning("Service Provider for module {$moduleName} not found.");
                 }
             }
+        }
+    }
+
+    protected function load_routes() {
+        $moduleName = str_replace('ServiceProvider', '', class_basename($this));
+        $moduleNamePlural = ucfirst(strtolower($moduleName)) . 's';
+        $routesPath = base_path("Modules/{$moduleNamePlural}/routes/*.php");
+        $routeFiles = glob($routesPath);
+        if (empty($routeFiles)) {
+            Log::warning('No route files found in: ' . $routesPath);
+        } else {
+            Log::info('Route files found: ' . json_encode($routeFiles));
+        }
+        foreach ($routeFiles as $routeFile) {
+            $this->loadRoutesFrom($routeFile);
+            Log::info('Loaded route file: ' . $routeFile);
         }
     }
 }

@@ -1,15 +1,21 @@
 <?php
-
 namespace Modules\Admins\Providers;
-
-use Illuminate\Support\ServiceProvider;
-
-class AdminServiceProvider extends ServiceProvider
-{
+use App\Providers\ModuleServiceProvider;
+class AdminServiceProvider extends ModuleServiceProvider {
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
     public function boot() {
-        //dd('admin service provider');
+        $this->load_routes();
     }
 
+    /**
+     * Register any application services.
+     *
+     * @return void
+     */
     public function register() {
 
     }

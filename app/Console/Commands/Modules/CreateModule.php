@@ -70,6 +70,7 @@ class CreateModule extends Command {
 
     protected function createControllers($modulePath, $moduleName) {
         $controllersPath = $modulePath . '/Http/Controllers';
+        $path = $modulePath . '/Http/';
         File::makeDirectory($controllersPath . '/Backend', 0755, true);
         File::makeDirectory($controllersPath . '/Frontend', 0755, true);
         File::makeDirectory($controllersPath . '/Api', 0755, true);
@@ -84,15 +85,9 @@ class CreateModule extends Command {
             $this->createRegularController($controllersPath . '/Frontend', $moduleName, "{$this->modelName}Controller");
             $this->createRegularController($controllersPath . '/Api', $moduleName, "{$this->modelName}Controller");
         }
-    }
-
-    protected function createControllerFile($path, $moduleName, $type, $isResource) {
-        $controllerFile = $path . '/' . $this->modelName . 'Controller.php';
-        $namespace = "Modules\\{$moduleName}\\Http\\Controllers\\{$type}";
-        $controllerType = $isResource ? 'Resource' : 'Controller';
-        $controllerContent = "<?php\n\nnamespace {$namespace};\n\nuse Illuminate\\Http\\Request;\nuse App\\Http\\Controllers\\Controller;\n\nclass {$this->modelName}Controller extends Controller\n{\n    // {$controllerType} content here\n}\n";
-        File::put($controllerFile, $controllerContent);
-        $this->info("{$type} Controller created successfully!");
+        if ($this->confirm('Do you want to create Middleware and Requests folders?')) {
+            $this->createAdditionalFolders($path, $moduleName);
+        }
     }
 
     protected function createResourceController($path, $moduleName, $controllerName) {
@@ -111,6 +106,20 @@ class CreateModule extends Command {
         $controllerContent = "<?php\n\nnamespace {$namespace};\n\nuse App\\Http\\Controllers\\Controller;\n\nclass {$controllerName} extends Controller\n{\n    public function index() {\n        // Regular Controller content here\n    }\n}\n";
         File::put($controllerFile, $controllerContent);
         $this->info("Regular Controller {$controllerName} created successfully in {$path}!");
+    }
+
+    protected function createAdditionalFolders($path, $moduleName) {
+        $middlewarePath = $path . '/Middleware';
+        if (!File::exists($middlewarePath)) {
+            File::makeDirectory($middlewarePath, 0755, true);
+            $this->info("Middleware folder created successfully!");
+        }
+
+        $requestsPath = $path . '/Requests';
+        if (!File::exists($requestsPath)) {
+            File::makeDirectory($requestsPath, 0755, true);
+            $this->info("Requests folder created successfully!");
+        }
     }
 
     protected function createModel($modelsPath, $moduleName) {

@@ -19,15 +19,15 @@ class ServiceProviderGenerator {
         return <<<EOT
                 <?php
                 namespace {$namespace};
-                use Illuminate\Support\ServiceProvider;
-                class {$serviceProviderName} extends ServiceProvider {
+                use App\Providers\ModuleServiceProvider;
+                class {$serviceProviderName} extends ModuleServiceProvider {
                     /**
                      * Bootstrap any application services.
                      *
                      * @return void
                      */
                     public function boot() {
-
+                        \$this->load_routes();
                     }
 
                     /**
@@ -36,7 +36,7 @@ class ServiceProviderGenerator {
                      * @return void
                      */
                     public function register() {
-                    
+
                     }
                 }
                 EOT;
